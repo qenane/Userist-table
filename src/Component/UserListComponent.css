@@ -1,0 +1,6 @@
+.parent {
+    display: inline-block;
+    border: 1px solid red;
+  }button {
+    width: 100%;
+  }
