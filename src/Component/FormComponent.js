@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, {  useState } from "react";
 import {
+  Col,
   Form,
   FormGroup,
   Input,
@@ -8,52 +9,62 @@ import {
   ModalBody,
   ModalFooter,
   ModalHeader,
+  Row,
 } from "reactstrap";
 
 export default function FormComponent(props) {
-  const { addUser, hide, states} = props;
+  const { addUser,  showModal, handleCloseModal } = props;
   const [state, setState] = useState({
+    id: null,
     name: "",
     surname: "",
     username: "",
   });
-  const {user, visible} = states
+
   const onSubmit = () => {
-     hide(true) 
     addUser(state.name, state.surname, state.username);
+    handleCloseModal();
+    setState({user:{}})
   };
 
+  
+
   return (
-    <Modal isOpen={visible}>
-      <ModalHeader>Ekleme işlemi yapılacak</ModalHeader>
+    <Modal
+      isOpen={showModal}
+      modalTransition={{ timeout: 400 }}
+      backdropTransition={{ timeout: 100 }}
+    >
+      <ModalHeader>New User</ModalHeader>
       <ModalBody>
         <Form>
           <FormGroup>
-            <Label for="name">Name - {states.user.name}</Label>
+            <Row>
+            <Col xs="6">
+            <Label for="name">Name -{state.name} </Label>
             <Input
-                  value ={states.user.name}
               onChange={(e) => setState({ ...state, name: e.target.value })}
               id="name"
               name="name"
               type="text"
-            />
-          </FormGroup>
-          <FormGroup>
-            <Label for="Surname">Surname</Label>
+              required
+              />
+              </Col>
+          <Col>
+            <Label for="Surname">Surname -{state.surname}</Label>
             <Input
-            value ={states.user.surname}
-            
-
               onChange={(e) => setState({ ...state, surname: e.target.value })}
               id="Surname"
               name="Surname"
               type="text"
-            />
+              required
+              />
+              </Col>
+              </Row>
           </FormGroup>
           <FormGroup>
-            <Label for="Username">Username</Label>
+            <Label for="Username">Username -{state.username}</Label>
             <Input
-            value={states.user.username}
               onChange={(e) => setState({ ...state, username: e.target.value })}
               id="Username"
               name="Username"
@@ -66,7 +77,8 @@ export default function FormComponent(props) {
         <button className="btn btn-success" onClick={() => onSubmit()}>
           Add
         </button>
-        <button className="btn btn-danger" onClick={() => hide()}>
+
+        <button className="btn btn-danger" onClick={() => handleCloseModal()}>
           Cancel
         </button>
       </ModalFooter>
